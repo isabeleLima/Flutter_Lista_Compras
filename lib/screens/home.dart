@@ -9,7 +9,6 @@ class Home extends StatefulWidget {
 
   @override
   State<Home> createState() => _HomeState();
-
 }
 
 class _HomeState extends State<Home> {
@@ -17,13 +16,13 @@ class _HomeState extends State<Home> {
   final _itemName = TextEditingController();
   final _itemQTD = TextEditingController();
 
-
   List<Cart> _foundItem = [];
 
   void initState() {
     _foundItem = itemList;
     super.initState();
   }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -37,31 +36,38 @@ class _HomeState extends State<Home> {
         children: [
           Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              child:Column(children: [
-                searchBox(),
-                Expanded(child:
-                ListView(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top:50,bottom: 20),
-                      child: const Text('Lista de compras', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),),
+              child: Column(
+                children: [
+                  searchBox(),
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 50, bottom: 20),
+                          child: const Text(
+                            'Lista de compras',
+                            style: TextStyle(
+                                fontSize: 26, fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                        for (Cart cart in _foundItem)
+                          Item(
+                            cart: cart,
+                            onToDoChange: _handleToDoChange,
+                            onDeleteItem: _deleteToDoItem,
+                          ),
+                      ],
                     ),
-                    for ( Cart cart in _foundItem)
-                      Item(cart: cart,onToDoChange: _handleToDoChange,onDeleteItem:_deleteToDoItem ,),
-                    
-                  ],
-                ),
-                ),
-              ],)
-          ),
+                  ),
+                ],
+              )),
           Align(
             alignment: Alignment.bottomCenter,
             child: Row(children: [
-              Expanded(
-                child: Container(
+              Expanded(child:
+                Container(
                   margin: const EdgeInsets.only(
                     bottom: 20,
-                    right: 0,
                     left: 20,
                   ),
                   padding: const EdgeInsets.symmetric(
@@ -80,45 +86,45 @@ class _HomeState extends State<Home> {
                     ],
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child:  TextField(
+                  child: TextField(
                     controller: _itemName,
                     decoration: InputDecoration(
-                        hintText: 'Item',
-                        border: InputBorder.none),
+                        hintText: 'Item', border: InputBorder.none),
                   ),
                 ),
               ),
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(
-                    bottom: 20,
-                    right: 20,
-                    left: 50,
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 5,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        offset: Offset(0.0, 0.0),
-                        blurRadius: 10.0,
-                        spreadRadius: 0.0,
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child:  TextField(
-                    controller: _itemQTD,
-                    decoration: InputDecoration(
-                        hintText: 'QTD',
-                        border: InputBorder.none),
+
+              Container(
+                margin: const EdgeInsets.only(
+                  bottom: 20,
+                  right: 20,
+                  left: 20,
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 5,
+                ),
+                width: 70,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(0.0, 0.0),
+                      blurRadius: 10.0,
+                      spreadRadius: 0.0,
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextField(
+                  controller: _itemQTD,
+                  decoration: const InputDecoration(
+                      hintText: 'Qtd', border: InputBorder.none
                   ),
                 ),
               ),
+
               Container(
                 margin: const EdgeInsets.only(
                   bottom: 20,
@@ -148,36 +154,36 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget searchBox(){
-    return  Container(
+  Widget searchBox() {
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20)
-      ),
-      child:  TextField(
+          color: Colors.white, borderRadius: BorderRadius.circular(20)),
+      child: TextField(
         onChanged: (value) => _runFilter(value),
         decoration: InputDecoration(
             contentPadding: EdgeInsets.all(0),
-            prefixIcon: Icon(Icons.search, color:tdBlack, size:20),
+            prefixIcon: Icon(Icons.search, color: tdBlack, size: 20),
             prefixIconConstraints: BoxConstraints(maxHeight: 20, minWidth: 25),
             border: InputBorder.none,
             hintText: 'Buscar',
-            hintStyle: TextStyle(color:tdGrey)
-        ),
+            hintStyle: TextStyle(color: tdGrey)),
       ),
     );
   }
 
-  void _deleteToDoItem(String id){
+  void _deleteToDoItem(String id) {
     setState(() {
       itemList.removeWhere((element) => element.id == id);
     });
   }
 
-  void _addToDoItem(String item, String qtd){
+  void _addToDoItem(String item, String qtd) {
     setState(() {
-      itemList.add(Cart(id:DateTime.now().millisecondsSinceEpoch.toString(), text: item, amount: qtd));
+      itemList.add(Cart(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          text: item,
+          amount: qtd));
     });
     _itemName.clear();
     _itemQTD.clear();
@@ -189,9 +195,8 @@ class _HomeState extends State<Home> {
       results = itemList;
     } else {
       results = itemList
-          .where((item) => item.text!
-          .toLowerCase()
-          .contains(enteredKeyword.toLowerCase()))
+          .where((item) =>
+              item.text!.toLowerCase().contains(enteredKeyword.toLowerCase()))
           .toList();
     }
 
@@ -199,7 +204,8 @@ class _HomeState extends State<Home> {
       _foundItem = results;
     });
   }
-  void _handleToDoChange(Cart todo){
+
+  void _handleToDoChange(Cart todo) {
     setState(() {
       todo.isDone = !todo.isDone;
     });
