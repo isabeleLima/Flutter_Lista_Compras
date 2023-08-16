@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
-import '../model/todo.dart';
+import '../model/cart.dart';
 import '../widgets/to_do_item.dart';
 
 class Home extends StatefulWidget {
@@ -13,7 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final todoList = ToDo.todoList();
+  final itemList = Cart.itemList();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -26,18 +26,18 @@ class _HomeState extends State<Home> {
       body: Stack(
         children: [
           Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child:Column(children: [
                 searchBox(),
                 Expanded(child:
                 ListView(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top:50,bottom: 20),
-                      child: Text('O que temos que fazer hoje?', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),),
+                      margin: const EdgeInsets.only(top:50,bottom: 20),
+                      child: const Text('Lista de compras', style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),),
                     ),
-                    for ( ToDo todoo in todoList)
-                      ToDoItem(todo: todoo,onToDoChange: _handleToDoChange,onDeleteItem:_deleteToDoItem ,),
+                    for ( Cart cart in itemList)
+                      Item(cart: cart,onToDoChange: _handleToDoChange,onDeleteItem:_deleteToDoItem ,),
                     
                   ],
                 ),
@@ -49,12 +49,12 @@ class _HomeState extends State<Home> {
             child: Row(children: [
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(
+                  margin: const EdgeInsets.only(
                     bottom: 20,
                     right: 20,
                     left: 20,
                   ),
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 5,
                   ),
@@ -70,7 +70,7 @@ class _HomeState extends State<Home> {
                     ],
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: TextField(
+                  child: const TextField(
                     decoration: InputDecoration(
                         hintText: 'Adicione nova Tarefa',
                         border: InputBorder.none),
@@ -78,24 +78,24 @@ class _HomeState extends State<Home> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   bottom: 20,
                   right: 20,
                 ),
                 child: ElevatedButton(
-                  child: Text(
-                    '+',
-                    style: TextStyle(
-                      fontSize: 40,
-                    ),
-                  ),
                   onPressed: () {
 
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: tdBlue,
-                    minimumSize: Size(60, 60),
+                    backgroundColor: tdBlue,
+                    minimumSize: const Size(60, 60),
                     elevation: 10,
+                  ),
+                  child: const Text(
+                    '+',
+                    style: TextStyle(
+                      fontSize: 40,
+                    ),
                   ),
                 ),
               ),
@@ -108,12 +108,12 @@ class _HomeState extends State<Home> {
 
   Widget searchBox(){
     return  Container(
-      padding: EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20)
       ),
-      child: TextField(
+      child: const TextField(
         decoration: InputDecoration(
             contentPadding: EdgeInsets.all(0),
             prefixIcon: Icon(Icons.search, color:tdBlack, size:20),
@@ -127,9 +127,9 @@ class _HomeState extends State<Home> {
   }
 
   void _deleteToDoItem(String id){
-    todoList.removeWhere((element) => element.id == id);
+    itemList.removeWhere((element) => element.id == id);
   }
-  void _handleToDoChange(ToDo todo){
+  void _handleToDoChange(Cart todo){
     setState(() {
       todo.isDone = !todo.isDone;
     });
